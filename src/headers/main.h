@@ -1,16 +1,11 @@
 #ifndef CSERVER_MAIN_H
 #define CSERVER_MAIN_H
-typedef struct Request
-{
-    char *method;
-    char *endpoint;
-    char *url;
-    char *content_type;
-    char *file_contents;
-    char *response;
-}Request;
 
+//Used to accept the request
 int main();
-int open_socket(int domain, int type, int protocol);
-Request *parse_request(int* file_desc);
+//Function name is a lie, it's reading the whole header, but we're only using the endpoint and returning the file name
+const char *get_endpoint(const int fd);
+//Used to respond to the request
+void route(const int client_fd);
+
 #endif //CSERVER_MAIN_H

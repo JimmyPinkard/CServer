@@ -4,7 +4,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
-char *read_file(char *filename)
+
+char *read_file(const char *filename)
 {
     char *contents, path[60];
     const char dir[] = "client";
@@ -26,17 +27,4 @@ char *read_file(char *filename)
 int string_compare(char *str1, char* str2)
 {
     return strncmp(str1, str2, strlen(str2)) == 0;
-}
-char *substring(const char *str, int start, int end)
-{
-    if(end >= strlen(str))
-    {
-        fatal("Indexing addresses that don't exist");
-    }
-    char *ret = err_malloc(sizeof(char) * (end - start));
-    for(int i = start; i < end; ++i)
-    {
-        ret[i] = str[i];
-    }
-    return ret;
 }
