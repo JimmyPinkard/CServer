@@ -4,21 +4,24 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <dirent.h>
 
 char *read_file(const char *filename)
 {
-    char *contents, path[60];
     const char dir[] = "client";
+    const int path_length = strlen(filename) + strlen(dir) + 1;
+    char *contents, path[path_length];
     snprintf(path, strlen(dir) + strlen(filename) + 1, "%s%sl", dir, filename);
-    path[59] = '\0';
+    path[path_length - 1] = '\0';
+    opendir(path);
     int file_desc = open(path, O_RDONLY);
     if(file_desc == -1)
     {
         fatal("Couldn't open file\n");
     }
-    int content_length = (int) lseek(file_desc, 0, SEEK_END);
+    const int content_length = (int) lseek(file_desc, 0, SEEK_END);
     lseek(file_desc, 0, SEEK_SET);
-    contents = err_malloc(sizeof(char) * content_length + 1);
+    contents = err_malloc((sizeof(char) * content_length) + 1);
     read(file_desc, contents, content_length);
     contents[content_length] = '\0';
     close(file_desc);

@@ -8,12 +8,12 @@
 #include "headers/socket_utils.h"
 #include "headers/string_utils.h"
 
-const int port = 8080;
 const char *yes_codes[] = {"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/css; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/javascript; charset=UTF-8\r\n\r\n"};
 int yes_index = -1;
 
 int main()
 {
+    const int port = 8080;
     int client_fd;
     struct sockaddr_in server_address, cli_address;
     socklen_t sin_len = sizeof(cli_address);
@@ -38,8 +38,8 @@ void route(const int client_fd)
 {
     const char *endpoint = get_endpoint(client_fd);
     char *contents, *response;
-    contents = read_file((const char *) endpoint);
-    int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 5;
+    contents = read_file(endpoint);
+    const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 5;
     response = err_malloc(response_length);
     snprintf(response, response_length, "%s%s\r\n\r\n\0", yes_codes[yes_index], contents);
     write(client_fd, response, strlen(response) - 1);
