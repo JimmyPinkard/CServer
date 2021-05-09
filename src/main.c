@@ -8,7 +8,6 @@
 #include "headers/socket_utils.h"
 #include "headers/string_utils.h"
 
-const char *yes_codes[] = {"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/css; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/javascript; charset=UTF-8\r\n\r\n"};
 int yes_index = -1;
 
 int main()
@@ -36,8 +35,9 @@ int main()
 
 void route(const int client_fd)
 {
+    const char *yes_codes[] = {"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/css; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/javascript; charset=UTF-8\r\n\r\n"};
     const char *endpoint = get_endpoint(client_fd);
-    char *contents, *response;
+    char *contents = NULL, *response = NULL;
     contents = read_file(endpoint);
     const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 5;
     response = err_malloc(response_length);
