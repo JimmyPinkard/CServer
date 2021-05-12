@@ -13,3 +13,6 @@ production :
 	$(COMP) -o2 -c $(SRC)
 	$(COMP) -o CServer -o2 $(OBJS)
 	rm $(OBJS)
+run:
+	make
+	gdb -q ./debug
