@@ -1,15 +1,15 @@
 SRC = src/*.c
 OBJS = *.o
 COMP = gcc -std=c99
-C Server : *.o
-	$(COMP) -o CServer $(OBJS)
+debug : *.o
+	$(COMP) -o debug -g3 $(OBJS)
 	rm $(OBJS)
 $(OBJS) : $(SRC)
-	$(COMP) -c $(SRC)
+	$(COMP) -c -g3 $(SRC)
 clean :
-	rm *.o CServer CServer-debug
+	rm *.o CServer debug
 	clear
-debug :
-	$(COMP) -g3 -c $(SRC)
-	$(COMP) -o CServer-debug -g3 $(OBJS)
+production :
+	$(COMP) -o2 -c $(SRC)
+	$(COMP) -o CServer -o2 $(OBJS)
 	rm $(OBJS)
