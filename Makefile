@@ -10,8 +10,8 @@ clean :
 	rm *.o CServer debug
 	clear
 production :
-	$(COMP) -o2 -c $(SRC)
-	$(COMP) -o CServer -o2 $(OBJS)
+	$(COMP) -O2 -c $(SRC)
+	$(COMP) -o CServer -O2 $(OBJS)
 	rm $(OBJS)
 run:
 	make
