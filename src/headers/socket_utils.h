@@ -7,4 +7,6 @@ int open_socket(int domain, int type, int protocol);
 void set_server(struct sockaddr_in *server_address, int port);
 //binds and error checks the socket
 int bind_socket(int socket, struct sockaddr_in *server_address);
+//Shutsdown and closes socket
+void close_socket(const int client_fd);
 #endif

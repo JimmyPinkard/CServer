@@ -38,15 +38,27 @@ void route(const int client_fd)
     const char *yes_codes[] = {"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/css; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/javascript; charset=UTF-8\r\n\r\n"};
     const char *endpoint = get_endpoint(client_fd);
     char *contents = NULL, *response = NULL;
-    contents = read_file(endpoint);
-    const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 5;
+    if(!string_compare(endpoint, "/favicon.ico"))
+    {
+        contents = (char *) read_file(endpoint);
+        const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 4;
+        response = err_malloc(response_length);
+        snprintf(response, response_length, "%s%s\r\n\r\n", yes_codes[yes_index], contents);
+        write(client_fd, response, strlen(response) - 1);
+        err_free(contents);
+        err_free(response);
+        close_socket(client_fd);
+        return;
+    }
+    /*
+    const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 4;
     response = err_malloc(response_length);
-    snprintf(response, response_length, "%s%s\r\n\r\n\0", yes_codes[yes_index], contents);
+    snprintf(response, response_length, "%s%s\r\n\r\n", yes_codes[yes_index], contents);
     write(client_fd, response, strlen(response) - 1);
     err_free(contents);
     err_free(response);
-    shutdown(client_fd, 2);
-    close(client_fd);
+    */
+    close_socket(client_fd);
 }
 
 const char *get_endpoint(const int fd)
@@ -62,9 +74,10 @@ const char *get_endpoint(const int fd)
         }
     }
     //Just to prevent memory leakage we're moving this to a char array
-    char contents[strlen(read_ptr)];
-    strcpy(contents, read_ptr);
+    const char contents[strlen(read_ptr)];
+    strcpy((char *)contents, read_ptr);
     err_free(read_ptr);
+    printf("%s\n\n", contents);
     if(strstr(contents, "GET") != NULL)
     {
         if(strstr(contents, "text/html") != NULL)
@@ -99,6 +112,10 @@ const char *get_endpoint(const int fd)
             {
                 return "/script.js";
             }
+        }
+        else if(strstr(contents, "/favicon.ico"))
+        {
+            return "/favicon.ico";
         }
     }
     return "no endpoint";

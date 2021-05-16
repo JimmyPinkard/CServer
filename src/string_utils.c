@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <dirent.h>
 
-char *read_file(const char *filename)
+const char *read_file(const char *filename)
 {
     const char dir[] = "client";
     const int path_length = strlen(filename) + strlen(dir) + 1;
@@ -27,7 +27,7 @@ char *read_file(const char *filename)
     close(file_desc);
     return contents;
 }
-int string_compare(char *str1, char* str2)
+int string_compare(const char *str1, const char* str2)
 {
     return strncmp(str1, str2, strlen(str2)) == 0;
 }

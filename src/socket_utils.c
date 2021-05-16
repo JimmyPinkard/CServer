@@ -29,3 +29,8 @@ int bind_socket(int socket, struct sockaddr_in *server_address)
     }
     return val;
 }
+void close_socket(const int client_fd)
+{
+    shutdown(client_fd, 2);
+    close(client_fd);
+}
