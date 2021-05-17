@@ -37,27 +37,13 @@ void route(const int client_fd)
 {
     const char *yes_codes[] = {"HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/css; charset=UTF-8\r\n\r\n", "HTTP/1.1 200 OK\r\nContent-Type: text/javascript; charset=UTF-8\r\n\r\n"};
     const char *endpoint = get_endpoint(client_fd);
-    char *contents = NULL, *response = NULL;
-    if(!string_compare(endpoint, "/favicon.ico"))
-    {
-        contents = (char *) read_file(endpoint);
-        const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 4;
-        response = err_malloc(response_length);
-        snprintf(response, response_length, "%s%s\r\n\r\n", yes_codes[yes_index], contents);
-        write(client_fd, response, strlen(response) - 1);
-        err_free(contents);
-        err_free(response);
-        close_socket(client_fd);
-        return;
-    }
-    /*
+    char *contents = read_file(endpoint), *response = NULL;
     const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 4;
     response = err_malloc(response_length);
     snprintf(response, response_length, "%s%s\r\n\r\n", yes_codes[yes_index], contents);
     write(client_fd, response, strlen(response) - 1);
     err_free(contents);
     err_free(response);
-    */
     close_socket(client_fd);
 }
 
