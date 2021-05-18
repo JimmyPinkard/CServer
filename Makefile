@@ -15,4 +15,7 @@ production :
 	rm $(OBJS)
 run:
 	make
+	./debug
+run-debug:
+	make
 	gdb -q ./debug
