@@ -3,5 +3,5 @@
 cmake-build-debug
 CMakeLists.txt
 CServer
-"C Server"
+debug
 *.o
