@@ -11,7 +11,7 @@ const char *read_file(const char *filename)
     const char dir[] = "client";
     const int path_length = strlen(filename) + strlen(dir) + 1;
     char *contents, path[path_length];
-    snprintf(path, strlen(dir) + strlen(filename) + 1, "%s%sl", dir, filename);
+    snprintf(path, path_length, "%s%sl", dir, filename);
     path[path_length - 1] = '\0';
     opendir(path);
     int file_desc = open(path, O_RDONLY);
