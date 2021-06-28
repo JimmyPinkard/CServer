@@ -35,7 +35,7 @@ int main()
 
 void route(const int client_fd)
 {
-    const char *yes_codes[] = {"HTTP/2 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n", "HTTP/2 200 OK\r\nContent-Type: text/css; charset=UTF-8\r\n\r\n", "HTTP/2 200 OK\r\nContent-Type: text/javascript; charset=UTF-8\r\n\r\n"};
+    const char *yes_codes[] = {"HTTP/3 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n", "HTTP/3 200 OK\r\nContent-Type: text/css; charset=UTF-8\r\n\r\n", "HTTP/3 200 OK\r\nContent-Type: text/javascript; charset=UTF-8\r\n\r\n"};
     const char *endpoint = get_endpoint(client_fd), *contents = read_file(endpoint);
     char *response = NULL;
     const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 4;
