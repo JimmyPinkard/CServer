@@ -12,3 +12,13 @@ class Header extends HTMLElement
     }
 }
 customElements.define("header-component", Header);
+
+fetch("localhost:8080/bruh",
+{
+    method: "POST",
+    headers:
+    {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({"name": "Jimmy"})
+}).catch(console.log("Task Failed Properly"));

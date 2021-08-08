@@ -1,7 +1,7 @@
 SRC = src/*.c
 OBJS = *.o
 COMP = gcc -std=c99
-debug : *.o
+debug : $(OBJS)
 	$(COMP) -o debug -g3 $(OBJS)
 	rm $(OBJS)
 $(OBJS) : $(SRC)

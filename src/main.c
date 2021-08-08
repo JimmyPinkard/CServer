@@ -8,19 +8,20 @@
 #include "headers/socket_utils.h"
 #include "headers/string_utils.h"
 
+#define PORT 8080
+
 int yes_index = -1;
 
 int main()
 {
-    const int port = 8080;
     int client_fd;
     struct sockaddr_in server_address, cli_address;
     socklen_t sin_len = sizeof(cli_address);
     int socket = open_socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    set_server(&server_address, port);
+    set_server(&server_address, PORT);
     bind_socket(socket, &server_address);
     listen(socket, 5);
-    printf("Server started on port %i\n", port);
+    printf("Server started on port %i\n", PORT);
     while(1)
     {
         client_fd = accept(socket, (struct sockaddr *) &cli_address, &sin_len);
@@ -38,7 +39,7 @@ void route(const int client_fd)
     const char *yes_codes[] = {"HTTP/3 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n", "HTTP/3 200 OK\r\nContent-Type: text/css; charset=UTF-8\r\n\r\n", "HTTP/3 200 OK\r\nContent-Type: text/javascript; charset=UTF-8\r\n\r\n"};
     const char *endpoint = get_endpoint(client_fd), *contents = read_file(endpoint);
     char *response = NULL;
-    const int response_length = strlen(yes_codes[yes_index]) + strlen(contents) + 4;
+    const int response_length = (int) (strlen(yes_codes[yes_index]) + strlen(contents) + 4);
     response = err_malloc(response_length);
     snprintf(response, response_length, "%s%s\r\n\r\n", yes_codes[yes_index], contents);
     write(client_fd, response, strlen(response) - 1);
@@ -54,11 +55,13 @@ const char *get_endpoint(const int fd)
     {
         read_ptr = (char *)err_realloc(read_ptr, strlen(read_ptr) + 1);
         strcat(read_ptr, &buffer[0]);
+        printf("%c", buffer[0]);
         if(strstr(read_ptr, "\r\n\r\n") != NULL)
         {
             break;
         }
     }
+    printf("\n");
     //Just to prevent memory leakage we're moving this to a char array
     const char contents[strlen(read_ptr)];
     strcpy((char *)contents, read_ptr);
