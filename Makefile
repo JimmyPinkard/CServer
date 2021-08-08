@@ -1,21 +1,22 @@
 SRC = src/*.c
 OBJS = *.o
 COMP = gcc -std=c99
-debug : $(OBJS)
-	$(COMP) -o debug -g3 $(OBJS)
+BIN = CServer
+$(BIN) : $(OBJS)
+	$(COMP) -o $(BIN) -g3 $(OBJS)
 	rm $(OBJS)
 $(OBJS) : $(SRC)
 	$(COMP) -c -g3 $(SRC)
 clean :
-	rm *.o CServer debug
+	rm *.o $(BIN)
 	clear
 production :
 	$(COMP) -O2 -c $(SRC)
-	$(COMP) -o CServer -O2 $(OBJS)
+	$(COMP) -o $(BIN) -O2 $(OBJS)
 	rm $(OBJS)
 run:
 	make
-	./debug
+	./$(BIN)
 run-debug:
 	make
-	gdb -q ./debug
+	gdb -q ./$(BIN)
